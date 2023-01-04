@@ -1,6 +1,7 @@
 package com.vn.spring.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,17 +9,19 @@ import org.hibernate.Hibernate;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity(name = "Users")
 @Table
 @NoArgsConstructor
+@Getter
 @Setter
 @ToString
 public class Users {
-    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "users_sequence", sequenceName = "users_sequence", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_sequence")
     private Long id;
 
     @Column(name = "firstName", nullable = false)
@@ -57,6 +60,12 @@ public class Users {
 
     @Column(name = "userAgent", nullable = false)
     private String userAgent;
+
+    @Column(name = "createdAt")
+    private Date createdAt;
+
+    @Column(name = "updateAt")
+    private Date updateAt;
 
     public Users(Long id,
                  String firstName,
@@ -108,56 +117,20 @@ public class Users {
         this.userAgent = userAgent;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
     public Integer getAge() {
         return Period.between(this.birthDate, LocalDate.now()).getYears();
     }
 
-    public String getGender() {
-        return gender;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = new Date();
     }
 
-    public String getEmail() {
-        return email;
+    public Long getId() {
+        return id;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public String getMacAddress() {
-        return macAddress;
-    }
-
-    public String getUserAgent() {
-        return userAgent;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

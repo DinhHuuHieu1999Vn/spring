@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -21,7 +19,8 @@ public class SecurityConfig {
             .authorizeHttpRequests((auth) -> auth
                 .anyRequest().authenticated()
             )
-            .httpBasic(withDefaults());
+            .oauth2ResourceServer().jwt();
+//            .httpBasic(withDefaults());
         return httpSecurity.build();
     }
 

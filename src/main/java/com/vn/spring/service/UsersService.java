@@ -28,6 +28,10 @@ public class UsersService {
         return usersRepository.findAll();
     }
 
+    public Optional<Users> getUserById(Long id) {
+        return usersRepository.findById(id);
+    }
+
     public void addUsers(Users users) {
         Optional<Users> findUsersByEmail = usersRepository.findUsersByEmail(users.getEmail());
         Optional<Users> findUsersByUsername = usersRepository.findUsersByUsername(users.getEmail());
@@ -97,13 +101,11 @@ public class UsersService {
         usersRepository.deleteById(usersId);
     }
 
-    public Page<Users> getUsersS(String keyword,
-                                 Integer pageNumber,
-                                 Integer pageSize) {
-        return usersRepository.findAll(PageRequest.of(
-            pageNumber,
-            pageSize,
-            Sort.by(keyword).descending()));
+    public List<Users> getAllUsersSorted(String sort) {
+        if (sort.toString().trim().toLowerCase().equals(SortEnums.DESC.toString().trim().toLowerCase())) {
+            return usersRepository.findAll(Sort.by("id").descending());
+        }
+        return usersRepository.findAll(Sort.by("id").ascending());
     }
 
     public List<Users> getAllUsersSorted(String keyword, String sort) {
@@ -111,5 +113,20 @@ public class UsersService {
             return usersRepository.findAll(Sort.by(keyword).descending());
         }
         return usersRepository.findAll(Sort.by(keyword).ascending());
+    }
+
+    public Page<Users> getAllUsersPagination(Integer pageNumber,
+                                             Integer pageSize) {
+        return usersRepository.findAll(PageRequest.of(pageNumber, pageSize));
+    }
+
+    public Page<Users> getAllUsersPaginationSortedByKeyword(String keyword,
+                                                            String sort,
+                                                            Integer pageNumber,
+                                                            Integer pageSize) {
+        if (sort.toString().trim().toLowerCase().equals(SortEnums.DESC.toString().trim().toLowerCase())) {
+            return usersRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(keyword).descending()));
+        }
+        return usersRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(keyword).ascending()));
     }
 }

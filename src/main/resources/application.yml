@@ -5,10 +5,23 @@ server:
   port: 8080
 
 spring:
+  data:
+    rest:
+      base-path: /api
   datasource:
     url: jdbc:postgresql://localhost:5432/spring
     username: postgres
     password: 0f721c59d823da77366872cdffbb4ca4
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: 3fc1a47a3d413e50a797
+            clientSecret: c260e1b109d4930f26867094d1a7a82726588eed
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/auth
 
   jpa:
     hibernate:
